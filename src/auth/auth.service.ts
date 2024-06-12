@@ -31,22 +31,43 @@ export class AuthService {
     if (!passwordMatch) {
       throw new UnauthorizedException('Usuário ou senha inválidos');
     }
+    const expiresInSeconds = parseInt(
+      this.configService.getOrThrow('JWT_EXPIRES_IN_SECONDS'),
+    );
+    console.log('expiresInSeconds', expiresInSeconds);
+    const expiresIn = dayjs().add(expiresInSeconds, 'seconds').unix();
     const token = await this.jwtService.signAsync({
       userId: user.id,
       email: user.email,
       name: user.name,
+      iat: expiresIn,
     });
-    const expiresInSeconds = parseInt(
-      this.configService.getOrThrow('JWT_EXPIRES_IN_SECONDS'),
-    );
+
     return {
       token,
-      expires_in: dayjs().add(expiresInSeconds, 'second').unix(),
+      expires_in: expiresIn,
     };
   }
 
   public async validateToken(token: string): Promise<boolean> {
     try {
+      const decodedToken = this.jwtService.decode<{
+        userId: number;
+        email: string;
+        name: string;
+        iat: number;
+      }>(token);
+      if (!decodedToken) {
+        return false;
+      }
+      const now = dayjs(new Date()).unix();
+      const tokenExpireDate = dayjs.unix(decodedToken.iat).unix();
+
+      const tokenExpired = tokenExpireDate < now;
+
+      if (tokenExpired) {
+        return false;
+      }
       await this.jwtService.verifyAsync(token);
       return true;
     } catch (error) {

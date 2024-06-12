@@ -23,14 +23,14 @@ model User {
 
 model Post {
   id        Int      @id @default(autoincrement())
-  title     String
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId    Int
+  deletedAt DateTime?
+  authorId    Int
   likes     Likes[]
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [authorId], references: [id])
 
   @@map("posts")
 }
