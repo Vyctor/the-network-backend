@@ -9,10 +9,10 @@ export class AuthController {
   @Post()
   @HttpCode(200)
   public async authenticate(
-    @Body() auth: AuthInputDto,
+    @Body() authInput: AuthInputDto,
   ): Promise<AuthOutputDto> {
     try {
-      return await this.authService.signIn(auth);
+      return await this.authService.signIn(authInput);
     } catch (error) {
       console.error(error);
       throw error;
