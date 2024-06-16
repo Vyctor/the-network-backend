@@ -7,3 +7,18 @@ Esse projeto visa criar uma rede social para compartilhamento de frases curtas d
 - NestJS
 - PostgreSQL
 - PrismaORM
+
+
+## Event Storm
+
+- Users
+  - **CAN**
+    - CREATE A POST
+    - UPDATE YOUR OWN POST
+    - DELETE YOUR OWN POST
+    - FOLLOW ANOTHER USER
+    - BE FOLLOWED BY ANOTHER USER
+  - **HAS**
+    - A POST FEED WITH FOLLOWED USER POSTS
+  - **CANNOT**
+    - DELETE A POST THAT IS NOT HIS
