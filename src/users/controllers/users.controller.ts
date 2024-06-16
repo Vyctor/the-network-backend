@@ -79,11 +79,22 @@ export class UsersController {
     const userLogged = await this.authService.getUserFromToken(
       request.headers.authorization,
     );
-    console.log('input:', userLogged, id);
     await this.usersService.unfollow({
       followerId: userLogged.userid,
       followingId: id,
     });
     return response.status(200).send();
+  }
+
+  @Get(':id/followers')
+  @UseGuards(AuthGuard)
+  async getFollowers(@Res() response: Response, @Param('id') id: number) {
+    const followers = await this.usersService.getUserFollowers(id);
+    if (!followers || followers.length === 0) {
+      return response.status(200).send({});
+    }
+    return response
+      .status(200)
+      .send(followers.map((follower) => follower.toJSON()));
   }
 }

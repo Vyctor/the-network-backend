@@ -84,4 +84,8 @@ export class UsersService {
       followerId,
     });
   }
+
+  async getUserFollowers(userId: number) {
+    return await this.followsRepository.findFollowersByUserId(userId);
+  }
 }

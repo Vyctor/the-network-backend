@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../infra/prisma/prisma.service';
+import { User } from '../entities/user.entity';
 
 export interface FollowInput {
   followerId: number;
@@ -92,7 +93,7 @@ export class FollowsRepositoryService {
     }
   }
 
-  async findFollowersByUserId(userId: number): Promise<number[]> {
+  async findFollowersByUserId(userId: number): Promise<User[]> {
     try {
       const followers = await this.prismaService.follows.findMany({
         where: {
@@ -100,7 +101,27 @@ export class FollowsRepositoryService {
         },
       });
 
-      return followers.map((follower) => follower.followerId);
+      if (!followers || followers.length === 0) return [];
+
+      const users = await this.prismaService.user.findMany({
+        where: {
+          id: {
+            in: followers.map((follow) => follow.followerId),
+          },
+        },
+      });
+
+      return users.map(
+        (user) =>
+          new User({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            updated_at: user.updatedAt,
+            created_at: user.createdAt,
+            password: user.password,
+          }),
+      );
     } catch (err) {
       throw err;
     }
