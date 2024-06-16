@@ -15,19 +15,33 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  posts Post[]
-  Likes Likes[]
+  posts     Post[]
+  Likes     Likes[]
+  followers Follows[] @relation("following")
+  following Follows[] @relation("follower")
 
   @@map("users")
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  content   String
+model Follows {
+  follower   User @relation("follower", fields: [followerId], references: [id])
+  followerId Int
+
+  following   User @relation("following", fields: [followingId], references: [id])
+  followingId Int
+
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+  @@id([followerId, followingId])
+}
+
+model Post {
+  id        Int       @id @default(autoincrement())
+  content   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-  authorId    Int
+  authorId  Int
   likes     Likes[]
 
   user User @relation(fields: [authorId], references: [id])
