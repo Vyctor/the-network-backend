@@ -34,7 +34,6 @@ export class AuthService {
     const expiresInSeconds = parseInt(
       this.configService.getOrThrow('JWT_EXPIRES_IN_SECONDS'),
     );
-    console.log('expiresInSeconds', expiresInSeconds);
     const expiresIn = dayjs().add(expiresInSeconds, 'seconds').unix();
     const token = await this.jwtService.signAsync({
       userId: user.id,
@@ -42,7 +41,6 @@ export class AuthService {
       name: user.name,
       iat: expiresIn,
     });
-
     return {
       token,
       expires_in: expiresIn,
