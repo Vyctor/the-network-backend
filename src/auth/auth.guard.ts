@@ -12,7 +12,9 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const token = request.headers['authorization']?.replace('Bearer ', '');
+    const fullToken = request?.headers['authorization'];
+    if (!fullToken) throw new UnauthorizedException('Token not found!');
+    const token = this.authService.removeBearerFromToken(fullToken);
     if (!token) {
       throw new UnauthorizedException(
         'O bearer token de autenticação é obrigatório!',

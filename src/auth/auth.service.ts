@@ -4,6 +4,7 @@ import { compare } from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { UsersRepositoryService } from '../users/repositories/users-repository.service';
 import dayjs from 'dayjs';
+import { TokenData } from './dto/auth.dto';
 
 export interface SignInInput {
   email: string;
@@ -22,6 +23,10 @@ export class AuthService {
     private readonly usersRepository: UsersRepositoryService,
   ) {}
 
+  public removeBearerFromToken(token: string): string {
+    return token.replace('Bearer ', '');
+  }
+
   public async signIn(input: SignInInput): Promise<SignInOutput> {
     const user = await this.usersRepository.findByEmail(input.email);
     if (!user) {
@@ -35,12 +40,14 @@ export class AuthService {
       this.configService.getOrThrow('JWT_EXPIRES_IN_SECONDS'),
     );
     const expiresIn = dayjs().add(expiresInSeconds, 'seconds').unix();
-    const token = await this.jwtService.signAsync({
+    const tokenData: TokenData = {
       userId: user.id,
       email: user.email,
       name: user.name,
       iat: expiresIn,
-    });
+    };
+
+    const token = await this.jwtService.signAsync(tokenData);
     return {
       token,
       expires_in: expiresIn,
@@ -49,20 +56,13 @@ export class AuthService {
 
   public async validateToken(token: string): Promise<boolean> {
     try {
-      const decodedToken = this.jwtService.decode<{
-        userId: number;
-        email: string;
-        name: string;
-        iat: number;
-      }>(token);
+      const decodedToken = this.decodeToken(token);
       if (!decodedToken) {
         return false;
       }
       const now = dayjs(new Date()).unix();
       const tokenExpireDate = dayjs.unix(decodedToken.iat).unix();
-
       const tokenExpired = tokenExpireDate < now;
-
       if (tokenExpired) {
         return false;
       }
@@ -71,5 +71,19 @@ export class AuthService {
     } catch (error) {
       return false;
     }
+  }
+
+  public decodeToken(token: string): TokenData {
+    return this.jwtService.decode<{
+      userId: number;
+      email: string;
+      name: string;
+      iat: number;
+    }>(token);
+  }
+
+  public async getUserFromToken(token: string): Promise<{ userid: number }> {
+    const decodedToken = this.decodeToken(this.removeBearerFromToken(token));
+    return { userid: decodedToken.userId };
   }
 }

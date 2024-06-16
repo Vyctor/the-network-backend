@@ -11,3 +11,10 @@ export interface AuthOutputDto {
   token: string;
   expires_in: number;
 }
+
+export interface TokenData {
+  userId: number;
+  email: string;
+  name: string;
+  iat: number;
+}
