@@ -24,6 +24,11 @@ export class UsersRepositoryService {
     const databaseUser = await this.prismaService.user.findUnique({
       where: { email },
     });
+
+    if (!databaseUser) {
+      return null;
+    }
+
     return new User({
       id: databaseUser.id,
       email: databaseUser.email,
