@@ -1,5 +1,5 @@
 node_modules
 coverage
-postgres-data
-rabbitmq-data
+mysql
 dist
+.env
