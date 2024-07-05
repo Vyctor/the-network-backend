@@ -1,18 +1,37 @@
 import { User } from "../../domain/entities/user";
 import { UserRepository } from "../repository/user-repository";
+import { hashSync } from "bcrypt";
+
+export interface CreateUserUsecaseInput {
+  nickName: string;
+  email: string;
+  password: string;
+  birthdate: Date;
+  bio: string;
+}
 
 export class CreateUserUsecase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute(user: User): Promise<void> {
+  async execute(input: CreateUserUsecaseInput): Promise<void> {
     const existingUser = await this.userRepository.findByEmailOrNickname(
-      user.email,
-      user.nickName
+      input.email,
+      input.nickName
     );
 
     if (existingUser) {
       throw new Error("User already exists");
     }
+
+    const hashedPassword = hashSync(input.password, 10);
+
+    const user = new User({
+      nickName: input.nickName,
+      email: input.email,
+      password: hashedPassword,
+      birthdate: input.birthdate,
+      bio: input.bio,
+    });
 
     await this.userRepository.create(user);
   }
