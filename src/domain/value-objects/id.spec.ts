@@ -16,6 +16,8 @@ describe("Uuid value object unit tests", () => {
 
   it("should throw an error when creating a uuid with an invalid value", () => {
     const invalidUuid = "invalid-uuid";
-    expect(() => Id.create(invalidUuid)).toThrow("Invalid id");
+    expect(() => {
+      Id.create(invalidUuid);
+    }).toThrow("Invalid id");
   });
 });
