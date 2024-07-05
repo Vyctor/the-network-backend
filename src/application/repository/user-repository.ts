@@ -7,4 +7,5 @@ export interface UserRepository {
   findById(id: string): Promise<User | null>;
   findByEmail(email: string): Promise<User | null>;
   findByNickname(nickname: string): Promise<User | null>;
+  findByEmailOrNickname(email: string, nickname: string): Promise<User | null>;
 }

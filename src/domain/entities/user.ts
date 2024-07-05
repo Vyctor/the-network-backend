@@ -22,7 +22,7 @@ export class User {
   private _updatedAt?: Date | null;
 
   constructor(props: UserConstructorProps) {
-    this._id = props?.id ?? null;
+    this._id = props.id ?? null;
     this._nickName = props.nickName;
     this._email = props.email;
     this._password = props.password;

@@ -19,21 +19,17 @@ describe("User entity unit tests", () => {
     createdAt: new Date(),
     updatedAt: new Date(),
   };
-  function createNonPersistedUser(): User {
-    return new User(nonPersistedUserParams);
-  }
   function createPersistedUser(): User {
     return new User(persistedUserParams);
   }
 
   it("should create a non-persisted new user", () => {
-    const user = createNonPersistedUser();
-
+    const user = new User(nonPersistedUserParams);
     expect(user).toBeInstanceOf(User);
-    expect(user.id).toBeNull();
-    expect(user.profilePicture).toBeNull();
-    expect(user.createdAt).toBeNull();
-    expect(user.updatedAt).toBeNull();
+    expect(user.id).toBe(null);
+    expect(user.profilePicture).toBe(null);
+    expect(user.createdAt).toBe(null);
+    expect(user.updatedAt).toBe(null);
     expect(user.nickName).toBe(nonPersistedUserParams.nickName);
     expect(user.email).toBe(nonPersistedUserParams.email);
     expect(user.password).toBe(nonPersistedUserParams.password);
@@ -42,7 +38,7 @@ describe("User entity unit tests", () => {
   });
 
   it("should create a persisted new user", () => {
-    const user = createPersistedUser();
+    const user = new User(persistedUserParams);
 
     expect(user).toBeInstanceOf(User);
     expect(user.id).toBe(persistedUserParams.id);
