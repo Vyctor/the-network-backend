@@ -4,4 +4,5 @@ export default {
   coverageDirectory: "coverage",
   coverageProvider: "v8",
   preset: "ts-jest",
+  testPathIgnorePatterns: ["/node_modules/", "/dist/"],
 };
