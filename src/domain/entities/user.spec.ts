@@ -26,10 +26,10 @@ describe("User entity unit tests", () => {
   it("should create a non-persisted new user", () => {
     const user = new User(nonPersistedUserParams);
     expect(user).toBeInstanceOf(User);
-    expect(user.id).toBe(null);
-    expect(user.profilePicture).toBe(null);
-    expect(user.createdAt).toBe(null);
-    expect(user.updatedAt).toBe(null);
+    expect(user.id).toBeUndefined();
+    expect(user.profilePicture).toBeUndefined();
+    expect(user.createdAt).toBeUndefined();
+    expect(user.updatedAt).toBeUndefined();
     expect(user.nickName).toBe(nonPersistedUserParams.nickName);
     expect(user.email).toBe(nonPersistedUserParams.email);
     expect(user.password).toBe(nonPersistedUserParams.password);

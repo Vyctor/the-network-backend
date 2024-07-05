@@ -17,20 +17,20 @@ export class User {
   private _password: string;
   private _birthdate: Date;
   private _bio: string;
-  private _profilePicture?: string | null;
-  private _createdAt?: Date | null;
-  private _updatedAt?: Date | null;
+  private _profilePicture?: string;
+  private _createdAt?: Date;
+  private _updatedAt?: Date;
 
   constructor(props: UserConstructorProps) {
-    this._id = props.id ?? null;
+    this._id = props.id;
     this._nickName = props.nickName;
     this._email = props.email;
     this._password = props.password;
     this._birthdate = props.birthdate;
     this._bio = props.bio;
-    this._profilePicture = props.profilePicture ?? null;
-    this._createdAt = props.createdAt ?? null;
-    this._updatedAt = props.updatedAt ?? null;
+    this._profilePicture = props.profilePicture;
+    this._createdAt = props.createdAt;
+    this._updatedAt = props.updatedAt;
   }
 
   get id() {
