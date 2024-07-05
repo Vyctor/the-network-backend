@@ -55,7 +55,7 @@ describe("Create User Usecase unit tests", () => {
       .spyOn(userRepo, "findByEmailOrNickname")
       .mockResolvedValue(user);
 
-    const createSpy = jest.spyOn(userRepo, "create").mockResolvedValue();
+    jest.spyOn(userRepo, "create").mockResolvedValue();
 
     await expect(createUserUsecase.execute(user)).rejects.toThrowError(
       "User already exists"
