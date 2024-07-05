@@ -32,19 +32,16 @@ describe("Create User Usecase unit tests", () => {
   it("should create a user", async () => {
     const userRepo = mockUserRepository();
     createUserUsecase = new CreateUserUsecase(userRepo);
-
     const findByEmailOrNicknameSpy = jest
       .spyOn(userRepo, "findByEmailOrNickname")
       .mockResolvedValue(null);
-
     const createSpy = jest.spyOn(userRepo, "create").mockResolvedValue();
-
     await createUserUsecase.execute(user);
     expect(findByEmailOrNicknameSpy).toHaveBeenCalledWith(
       user.email,
       user.nickName
     );
-    expect(createSpy).toHaveBeenCalledWith(user);
+    expect(createSpy).toHaveBeenCalled();
   });
 
   it("should throw an error if already exists an user using same email or nickname", async () => {

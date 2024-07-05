@@ -18,13 +18,10 @@ export class CreateUserUsecase {
       input.email,
       input.nickName
     );
-
     if (existingUser) {
       throw new Error("User already exists");
     }
-
     const hashedPassword = hashSync(input.password, 10);
-
     const user = new User({
       nickName: input.nickName,
       email: input.email,
@@ -32,7 +29,6 @@ export class CreateUserUsecase {
       birthdate: input.birthdate,
       bio: input.bio,
     });
-
     await this.userRepository.create(user);
   }
 }
