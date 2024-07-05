@@ -1,3 +1,4 @@
+import { Id } from "../value-objects/id";
 import { User } from "./user";
 
 describe("User entity unit tests", () => {
@@ -9,7 +10,7 @@ describe("User entity unit tests", () => {
     bio: "I'm a developer",
   };
   const persistedUserParams = {
-    id: "xpto",
+    id: "550e8400-e29b-41d4-a716-446655440000",
     profilePicture: "xpto",
     nickName: "John Doe",
     email: "john@gmail.com",
@@ -26,7 +27,7 @@ describe("User entity unit tests", () => {
   it("should create a non-persisted new user", () => {
     const user = new User(nonPersistedUserParams);
     expect(user).toBeInstanceOf(User);
-    expect(user.id).toBeUndefined();
+    expect(user.id).toBeInstanceOf(Id);
     expect(user.profilePicture).toBeUndefined();
     expect(user.createdAt).toBeUndefined();
     expect(user.updatedAt).toBeUndefined();
@@ -41,7 +42,7 @@ describe("User entity unit tests", () => {
     const user = new User(persistedUserParams);
 
     expect(user).toBeInstanceOf(User);
-    expect(user.id).toBe(persistedUserParams.id);
+    expect(user.id.getValue()).toBe(persistedUserParams.id);
     expect(user.nickName).toBe(persistedUserParams.nickName);
     expect(user.email).toBe(persistedUserParams.email);
     expect(user.password).toBe(persistedUserParams.password);

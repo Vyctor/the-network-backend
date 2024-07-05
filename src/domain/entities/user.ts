@@ -1,3 +1,5 @@
+import { Id } from "../value-objects/id";
+
 export interface UserConstructorProps {
   id?: string;
   nickName: string;
@@ -11,7 +13,7 @@ export interface UserConstructorProps {
 }
 
 export class User {
-  private _id?: string | null;
+  private _id: Id;
   private _nickName: string;
   private _email: string;
   private _password: string;
@@ -22,7 +24,7 @@ export class User {
   private _updatedAt?: Date;
 
   constructor(props: UserConstructorProps) {
-    this._id = props.id;
+    this._id = Id.create(props.id);
     this._nickName = props.nickName;
     this._email = props.email;
     this._password = props.password;
@@ -87,7 +89,7 @@ export class User {
 
   toJSON() {
     return {
-      id: this._id,
+      id: this._id.getValue(),
       nickName: this._nickName,
       email: this._email,
       password: this._password,

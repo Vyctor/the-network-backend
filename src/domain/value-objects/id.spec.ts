@@ -2,10 +2,10 @@ import { Id } from "./id";
 
 describe("Uuid value object unit tests", () => {
   it("should create a new uuid", () => {
-    const uuid = Id.create(undefined);
-
+    const uuid = Id.create();
     expect(uuid).toBeDefined();
     expect(Id.validate(uuid.getValue())).toBe(true);
+    expect(uuid).toBeInstanceOf(Id);
   });
 
   it("should create a new uuid with a value", () => {

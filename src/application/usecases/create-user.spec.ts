@@ -17,7 +17,7 @@ describe("Create User Usecase unit tests", () => {
 
   beforeEach(() => {
     user = new User({
-      id: "xpto",
+      id: "550e8400-e29b-41d4-a716-446655440000",
       profilePicture: "xpto",
       nickName: "John Doe",
       email: "john@gmail.com",
@@ -57,7 +57,7 @@ describe("Create User Usecase unit tests", () => {
 
     jest.spyOn(userRepo, "create").mockResolvedValue();
 
-    await expect(createUserUsecase.execute(user)).rejects.toThrowError(
+    await expect(createUserUsecase.execute(user)).rejects.toThrow(
       "User already exists"
     );
     expect(findByEmailOrNicknameSpy).toHaveBeenCalledWith(

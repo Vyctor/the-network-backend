@@ -8,7 +8,6 @@ export class Id {
       return new Id(uuid());
     }
     const isUuid = validate(value);
-
     if (!isUuid) {
       throw new Error("Invalid id");
     }
