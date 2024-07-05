@@ -1,6 +1,6 @@
-import { User } from "../../domain/entities/user";
-import { UserRepository } from "../repository/user-repository";
 import { hashSync } from "bcrypt";
+import { UserRepository } from "../../repository/user-repository";
+import { User } from "../../../domain/entities/user";
 
 export interface CreateUserUsecaseInput {
   nickName: string;
