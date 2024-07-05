@@ -1,5 +1,5 @@
-import { User } from "../../domain/entities/user";
-import { UserRepository } from "../repository/user-repository";
+import { User } from "../../../domain/entities/user";
+import { UserRepository } from "../../repository/user-repository";
 import { CreateUserUsecase } from "./create-user";
 
 describe("Create User Usecase unit tests", () => {
